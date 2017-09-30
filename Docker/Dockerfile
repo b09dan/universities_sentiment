@@ -12,5 +12,3 @@ RUN alias python=python3.5 \
 && pip3 install --upgrade wheel \
 && pip3 install python-telegram-bot --upgrade
 
-#Build this docker image
-#docker build -t python3env .
