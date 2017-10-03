@@ -13,17 +13,15 @@ site = 'www.timeshighereducation.com/academic/news/all?page=1'
 site_page = Path(cache_folder + site)
 
 
-def parsing_function(url, cache):
-    site_tree = urlopen(url).read().decode('utf-8', 'ignore')  # Making url, reading web-page and converting it to utf-8
-    site_bs = BeautifulSoup(site_tree, "html.parser")  # Converting to BS type
+def parsing_function(site_tree):
+    # Преобразовываем файл к объектному типу библиотеки BeautifulSoup
+    site_bs = BeautifulSoup(site_tree, "html.parser")
+    # Ищем все вхождения ссылок с главной страницы на статьи
     site_titles = site_bs.find_all('a', class_="article-title")
-    # articles_links = []
-    i = 0
     for site_title in site_titles:
         article_url = site_title.get('href')
         article_title = site_title.get_text()
-        print(article_title)
-
+        print(article_url)
 
 # Открывайм файл индекса страниц в кэше
 with open('../uni_cache/index.json', 'r') as articles_index_file:
@@ -40,8 +38,10 @@ with open('../uni_cache/index.json', 'r') as articles_index_file:
     # Теперь проверям (по содержанию строки uni_cache), какой у нас URL: из кэша или обычный, "интернетовский"
     if url.find('uni_cache') != -1:
         print('Using web page from cache...')
-        parsing_function(url, cache = True)
+        cached_page = open('../uni_cache/' + url, 'r').read()
+        parsing_function(cached_page)
     else:
+        print('Using web page from internet...')
         # Если страничка не из кэша, то открываем файл с индексами
         articles_index_file = open('../uni_cache/index.json', 'w')
         # Качаем исходники страницы для парсинга
@@ -55,3 +55,6 @@ with open('../uni_cache/index.json', 'r') as articles_index_file:
         # Добавляем страницу в индекс, т.к. теперь она закэширована
         articles_index_json[url] = parsed_page_name
         json.dump(articles_index_json, articles_index_file, sort_keys=True, indent=4)
+        # Парсим то, что загрузили из инета
+        parsing_function(site_tree)
+
