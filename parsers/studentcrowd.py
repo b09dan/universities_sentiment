@@ -28,10 +28,12 @@ def parsing_function(site_tree):
     for site_review in site_reviews:
         # Создаём что-то вроде ассоциативного массива
         article_meta_data = collections.OrderedDict()
-        # Херачим в него ссылки статьи
+        # Херачим в него текст отзывов
         article_meta_data['review_text'] = site_review.find("span", attrs={"itemprop": "reviewBody"}).get_text()
-        # Херачим в него заголовки статьи
+        # Херачим в него рейтинг отзыва
         article_meta_data['review_stars'] = int(site_review.find('div', class_="review-box__stars").attrs['class'][2].replace('stars--lg--', ''))
+        # Херачим в него дату отзыва
+        article_meta_data['review_date'] = site_review.find("meta", attrs={"itemprop": "datePublished"}).attrs['content']
         # Вкорячиваем этот "ассоциативный массив" в просто массив
         articles_data.append(article_meta_data)
     return articles_data

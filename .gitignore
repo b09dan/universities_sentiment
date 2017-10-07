@@ -1,8 +1,4 @@
 mysql_credits.py
-.idea/misc.xml
-.idea/modules.xml
-.idea/universities_sentiment.iml
-.idea/vcs.xml
-.idea/workspace.xml
+/mysql_credits.py
 __pycache__/
-uni_cache/__pycache__/
+.idea/
