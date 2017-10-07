@@ -3,19 +3,25 @@ from bs4 import BeautifulSoup  # Library for html parser (scraper), lxml is also
 from uni_cache.cache_function import cache_function
 import pymysql
 import collections
-import mysql_credits
 
-# This folder should be edited according to this project path on yours computer
-project_folder = '/home/bogdan/PycharmProjects/universities_sentiment/'
-cache_folder = project_folder + 'cache/'
+
 site = 'www.timeshighereducation.com'
 
+db = 'universities_sentiment'
+db_host = 'myip.bogdan.co'
+db_user = 'universities_sentiment_user'
+db_password = '8gku^u9.b!DY2Aw[=u]+X(jk6k'
+
+# db = 'db_name'
+# db_host = 'db_host_url'
+# db_user = 'db_user'
+# db_password = 'db_password'
 
 connection = pymysql.connect(
-    host=mysql_credits.db_host,
-    user=mysql_credits.db_user,
-    password=mysql_credits.db_password,
-    db=mysql_credits.db_password,
+    host=db_host,
+    user=db_user,
+    password=db_password,
+    db=db,
     charset='utf8mb4',
     cursorclass=pymysql.cursors.DictCursor
 )
