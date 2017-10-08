@@ -6,7 +6,8 @@ import collections
 import mysql_credits
 
 
-site = 'https://www.studentcrowd.com/university-l1005033-s1008374-oxford_brookes_university-oxford'
+site = 'https://www.studentcrowd.com/university-l1001651-s1008235-university_of_exeter-exeter'
+uni_name = 'University of Exeter'
 
 connection = pymysql.connect(
     host=mysql_credits.db_host,
@@ -29,7 +30,10 @@ def parsing_function(site_tree):
         # Создаём что-то вроде ассоциативного массива
         article_meta_data = collections.OrderedDict()
         # Херачим в него текст отзывов
-        article_meta_data['review_text'] = site_review.find("span", attrs={"itemprop": "reviewBody"}).get_text()
+        if site_review.find("span", attrs={"itemprop": "reviewBody"}):
+            article_meta_data['review_text'] = site_review.find("span", attrs={"itemprop": "reviewBody"}).get_text()
+        else:
+            article_meta_data['review_text'] = 'no_review_text'
         # Херачим в него рейтинг отзыва
         article_meta_data['review_stars'] = int(site_review.find('div', class_="review-box__stars").attrs['class'][2].replace('stars--lg--', ''))
         # Херачим в него дату отзыва
@@ -41,4 +45,18 @@ def parsing_function(site_tree):
 oxford_tree = cache_function(site)
 oxford_reviews = parsing_function(oxford_tree)
 
-print(oxford_reviews)
+
+for oxford_review in oxford_reviews:
+    try:
+        with connection.cursor() as cursor:
+            # Create a new record
+            # sql = "INSERT INTO `article` (`article_pub_date`, `article_title`, `article_text`, `article_url`, `article_rating`, `article_uni`, `uni_site_id`, `article_categories`) VALUES (%s, %s, %s, %s, %s, $s, 2, 'null');"
+            # cursor.execute(sql, (oxford_review['review_date'], 'no_title', oxford_review['review_text'], 'no_url', oxford_review['review_stars'], uni_name))
+            sql = "INSERT INTO `article` (`article_pub_date`, `article_title`, `article_text`, `article_url`, `article_rating`, `article_uni`, `uni_site_id`) VALUES ('"+oxford_review['review_date']+"', 'no_title', '"+oxford_review['review_text'].replace("'","")+"', '"+site+"', "+str(oxford_review['review_stars'])+", '"+uni_name+"', 2);"
+            cursor.execute(sql)
+        # connection is not autocommit by default. So you must commit to save
+        # your changes.
+        connection.commit()
+    finally:
+        print('Done!')
+connection.close()

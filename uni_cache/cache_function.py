@@ -3,6 +3,7 @@ import json
 from time import gmtime, strftime
 import hashlib
 from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 
 def cache_function(site_url):
@@ -28,8 +29,11 @@ def cache_function(site_url):
             print('Using web page from internet...')
             # Если страничка не из кэша, то открываем файл с индексами
             articles_index_file = open('../uni_cache/index.json', 'w')
+            # Прикидываемся файерфоксом
+            hdr = {'User-Agent': 'Mozilla/5.0'}
+            req = Request(site_url, headers=hdr)
             # Качаем исходники страницы для парсинга
-            site_tree = urlopen(site_url).read().decode('utf-8', 'ignore')
+            site_tree = urlopen(req).read().decode('utf-8', 'ignore')
             # Даём ей название по временной метке и хэшу md5
             parsed_page_name = strftime("%d.%m.%Y-%H", gmtime()) + '-' + hashlib.md5(
                 site_tree.encode()).hexdigest() + '.html'
