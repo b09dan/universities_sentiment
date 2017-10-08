@@ -58,5 +58,5 @@ for oxford_review in oxford_reviews:
         # your changes.
         connection.commit()
     finally:
-        print('Done!!!')
+        print('Done!')
 connection.close()
