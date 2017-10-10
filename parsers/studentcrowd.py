@@ -6,8 +6,8 @@ import collections
 import mysql_credits
 
 
-site = 'https://www.studentcrowd.com/university-l1001651-s1008235-university_of_exeter-exeter'
-uni_name = 'University of Exeter'
+site = 'https://www.studentcrowd.com/university-l1001035-s1008537-anglia_ruskin_university-cambridge'
+uni_name = 'Anglia Ruskin University'
 
 connection = pymysql.connect(
     host=mysql_credits.db_host,
