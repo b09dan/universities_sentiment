@@ -13,6 +13,10 @@ RUN  pip3 install beautifulsoup4
 RUN  pip3 install python-telegram-bot
 RUN  pip3 install pymysql
 RUN  pip3 install keras theano gensim nltk python-levenshtein
+RUN  pip3 install numpy sklearn
+RUN  pip3 install --upgrade tensorflow
+RUN python -c "import nltk; nltk.download('stopwords'); nltk.download('punkt')"
+
 #RUN  apt-get install python-mysqldb -y
 
 #Build this docker image
