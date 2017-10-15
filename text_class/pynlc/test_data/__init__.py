@@ -1,0 +1,10 @@
+import os
+_self = os.path.dirname(__file__)
+word2vec = os.path.join(_self, "glove.6B.100d.txt")
+dictionary = os.path.join(_self, "dictionary.json")
+news_classes = os.path.join(_self, "news.json")
+uni_classes = os.path.join(_self, "uni_articles.json")
+car_classes = os.path.join(_self, "car.json")
+weather_classes = os.path.join(_self, "weather.json")
+words = os.path.join(_self, "words.json")
+reuters_classes = os.path.join(_self, "reuters.json")
